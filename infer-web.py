@@ -6,6 +6,9 @@ from time import sleep
 import torch, os, traceback, sys, warnings, shutil, numpy as np
 import faiss
 
+import time 
+import hashlib
+
 now_dir = os.getcwd()
 sys.path.append(now_dir)
 tmp = os.path.join(now_dir, "TEMP")
@@ -167,7 +170,14 @@ def vc_single(
         print(
             "npy: ", times[0], "s, f0: ", times[1], "s, infer: ", times[2], "s", sep=""
         )
-        return "Success", (tgt_sr, audio_opt)
+        # save audio file to disk
+        if audio_opt is not None:
+            name_file = str(hashlib.md5(str(time.time()).encode("utf-8")).hexdigest())
+            file_path = os.path.join('/shared_mem', name_file + '.wav')
+            wavfile.write(file_path, tgt_sr, audio_opt)
+            
+    
+        return f"Success|{file_path}", (tgt_sr, audio_opt)
     except:
         info = traceback.format_exc()
         print(info)
