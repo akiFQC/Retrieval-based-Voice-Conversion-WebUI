@@ -215,16 +215,16 @@ class VC(object):
         audio_pad = np.pad(audio, (self.t_pad, self.t_pad), mode="reflect")
         p_len = audio_pad.shape[0] // self.window
         inp_f0 = None
-        if hasattr(f0_file, "name") == True:
-            try:
-                with open(f0_file.name, "r") as f:
-                    lines = f.read().strip("\n").split("\n")
-                inp_f0 = []
-                for line in lines:
-                    inp_f0.append([float(i) for i in line.split(",")])
-                inp_f0 = np.array(inp_f0, dtype="float32")
-            except:
-                traceback.print_exc()
+        # if hasattr(f0_file, "name") == True:
+        #     try:
+        #         with open(f0_file.name, "r") as f:
+        #             lines = f.read().strip("\n").split("\n")
+        #         inp_f0 = []
+        #         for line in lines:
+        #             inp_f0.append([float(i) for i in line.split(",")])
+        #         inp_f0 = np.array(inp_f0, dtype="float32")
+        #     except:
+        #         traceback.print_exc()
         sid = torch.tensor(sid, device=self.device).unsqueeze(0).long()
         pitch, pitchf = None, None
         if if_f0 == 1:
